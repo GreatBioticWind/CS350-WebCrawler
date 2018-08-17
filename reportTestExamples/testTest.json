@@ -1,0 +1,44 @@
+{
+  "Number Of Pages on which it is displayed": 1,
+  "Listing of images": [
+    "./htmlTestFiles/image/exampleExternalImage.html"
+  ],
+  "Image": "https://www.themeshnews.com/wp-content/uploads/2016/03/Top-10-Most-Beautiful-Countries-in-the-World-2016-USA.jpg"
+}
+{
+  "Number Of Pages on which it is displayed": 1,
+  "Listing of images": [
+    "./htmlTestFiles/image/exampleImage.html"
+  ],
+  "Image": "pic_mountain.jpg"
+}
+{
+  "Number of intra-page links": 0,
+  "Listing of scripts": [],
+  "Page ": "./htmlTestFiles/image/exampleExternalImage.html",
+  "Number of local images": 0,
+  "Listing of images": [
+    "https://www.themeshnews.com/wp-content/uploads/2016/03/Top-10-Most-Beautiful-Countries-in-the-World-2016-USA.jpg"
+  ],
+  "Listing of stylesheets": [],
+  "Number of external images": 1,
+  "Number of external links": 0,
+  "Number of inter-site links": 0,
+  "Number of scripts referenced": 0,
+  "Number of stylesheets utilized": 0
+}
+{
+  "Number of intra-page links": 0,
+  "Listing of scripts": [],
+  "Page ": "./htmlTestFiles/image/exampleImage.html",
+  "Number of local images": 1,
+  "Listing of images": [
+    "pic_mountain.jpg"
+  ],
+  "Listing of stylesheets": [],
+  "Number of external images": 0,
+  "Number of external links": 0,
+  "Number of inter-site links": 0,
+  "Number of scripts referenced": 0,
+  "Number of stylesheets utilized": 0
+}

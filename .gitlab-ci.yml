@@ -1,0 +1,42 @@
+stages:
+  - build
+  - deploy
+
+build-job:
+  tags:
+    - runner350
+    # atria does not support artifact publishing
+    #- atria
+  stage: build
+  script:
+    - chmod a+x gradlew
+    - ./gradlew build --no-daemon
+    # runner350 does not have doxygen installed
+    #- ./gradlew doxygen --no-daemon
+    - ./gradlew javadoc --no-daemon
+    - ./gradlew deployReports --no-daemon
+
+  artifacts:
+    # Make build directory available
+    paths:
+      - ./build
+
+deploy-job:
+  tags:
+    - runner350
+  stage: deploy
+  script:
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$RSYNC_KEY")
+    - ls -l
+    - rsync -auvz -e "ssh" build/reports kletchwo@atria.cs.odu.edu:./
+    - rsync -auvz -e "ssh" build/docs/javadoc kletchwo@atria.cs.odu.edu:./
+    #- echo "RSYNC PLACEHOLDER"
+    # Print available items (for debugging)
+    #- ls -lah
+    #- echo "------------------------"
+    #- ls -lah build
+    #- echo "------------------------"
+    #- ls -lah build/reports
+    #- echo "------------------------"
+    #- ls -lah build/docs

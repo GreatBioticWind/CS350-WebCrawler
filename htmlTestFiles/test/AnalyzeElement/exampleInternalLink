@@ -1,0 +1,3 @@
+<h1>When provided http://www.google.com as an URL argument this page should classify the folowing links as INTERNAL</h1>
+<p><a href="http://www.google.com/../exampleImage.html">http://www.google.com/../exampleImage.html</a></p>
+<p><a href="http://www.google.com/exampleAnchorLink.html">http://www.google.com/exampleAnchorLink.html</a></p>

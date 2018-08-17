@@ -1,0 +1,152 @@
+buildscript
+{
+	repositories
+	{ 
+		jcenter()
+        ivy { // for report_accumulator
+            url 'https://secweb.cs.odu.edu/~zeil/ivyrepo'
+        }
+	}
+	dependencies
+	{
+		classpath 'org.ysb33r.gradle:doxygen:0.2'
+		classpath 'org.hidetake:gradle-ssh-plugin:2.7.0+'
+        classpath 'edu.odu.cs.zeil:report_accumulator:1.1+'
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.ysb33r.doxygen'
+apply plugin: 'checkstyle'
+apply plugin: 'jacoco'
+apply plugin: 'org.hidetake.ssh'  // required for deploying reports to remote servers
+
+import edu.odu.cs.zeil.report_accumulator.ReportStats
+import edu.odu.cs.zeil.report_accumulator.ReportsDeploy
+
+checkstyle 
+{
+	//ignoreFailures = true
+	configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
+	toolVersion "8.0"
+}
+
+jacoco 
+{
+    toolVersion = "0.7.6.201602180812"
+    //reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+task wrapper(type: Wrapper){
+	gradleVersion = '2.10'
+}
+
+repositories
+{
+    jcenter()
+}
+
+repositories{
+	maven {
+		url "http://repo.mycompany.com/maven2"
+	}
+
+	ivy {
+		url "http://repor.mycompany.com/repo"
+		}
+	}
+
+dependencies
+{
+    testCompile "junit:junit:4.12"
+	testCompile 'org.apache.derby:derby:10.13.1.1'
+	testCompile 'com.googlecode.json-simple:json-simple:1.1.1'
+	testCompile 'com.google.code.gson:gson:2.8.1'
+    compile 'org.jsoup:jsoup:1.10.3'
+    compile 'org.apache.derby:derby:10.13.1.1'
+    compile 'com.googlecode.json-simple:json-simple:1.1.1'
+    compile 'com.google.code.gson:gson:2.8.1'
+}
+
+jar 
+{
+	baseName = 'WebsiteAnalysis'
+}
+
+test 
+{
+	testLogging
+	{
+		events "passed", "skipped", "failed", "standardOut", "standardError"
+	}
+
+	reports
+	{
+		html.enabled = true
+	}
+		
+	ignoreFailures true 
+}
+	
+checkstyle 
+{
+    ignoreFailures = true
+    showViolations = false    
+}
+
+tasks.withType(Checkstyle) 
+{
+    reports 
+    {
+    	html.destination project.file("build/reports/checkstyle/main.html")
+    }
+}
+
+checkstyleTest.enabled = false
+
+task collectStats(type: ReportStats, dependsOn: 'build') {
+    reportsURL = 'http://www.cs.odu.edu/~kletchwo/cs350/Blue8/reports'//had extra w
+}
+
+task deployReports(type: ReportsDeploy, dependsOn: 'collectStats') {
+    description 'Deploy reports and statistics to project website'
+    //deployDestination = '/path-for-copying-to-above-named-website'
+    //deployDestination = 'ssh://kletchwo@atria:build/reports/reportAccumulator'
+    //deployDestination = 'ssh://kletchwo@atria:build/reports/reportAccumulator'
+    
+    //deployDestination = '/path-for-copying-to-above-named-website'
+
+}
+
+doxygen 
+{
+	generate_html true
+
+	template 'src/documentation.config'
+
+	source new File(projectDir, 'src/test/java')
+	outputDir new File(buildDir, 'docs')
+}
+
+jacocoTestReport 
+{
+    reports 
+    {
+    	html.enabled = true
+        xml.enabled = true
+        //csv.enabled = true
+        //html.destination "build/jacoco/html"
+    }
+}
+
+test.finalizedBy jacocoTestReport
+
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+      tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+      }
+    }
+  }
+
