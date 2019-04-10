@@ -47,28 +47,12 @@ public class Image extends Resource
      * @param link Name of the file to search for
      */
     void extractLocation(String link) {
-    	/*The commented out code below was the begining of accounting for some bugs
-    		I had code that ran properly on Linux but failed on Windows so we chose
-    		to remove it due to time constraints. The code would account for and fix
-    		and errors caused by a ../ file relation. */
         String absLink = getPageDirectory() + File.separator + link;
-        /*String absLink=link;
-    	Next line needs to be altered to account for OS
-        String link2 = getPageDirectory();   
-        while (link.startsWith(".." + File.separator)) {
-        	int link3 = link2.lastIndexOf(File.separator);
-        	int linklength=link2.length()-link3;
-        	link2 = link2.substring(0, link2.length()-linklength);
-        	link=link.substring(3);
-        } */
+        
         if (new File(absLink).isFile())
         {
             setLocation("INTERNAL");
-            //setElementPath(absLink);
         } else {
-        	/*if (getElementPath().startsWith(".."+File.separator)) {
-        		setElementPath(absLink);
-        	}*/
             setLocation("EXTERNAL");
         }
     }
