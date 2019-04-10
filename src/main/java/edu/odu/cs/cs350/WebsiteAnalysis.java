@@ -41,10 +41,13 @@ public class WebsiteAnalysis
         //Create database and tables
         DB.setupDB();
 
-        //Initialize counters and vector maps
+        //Initialize counters
         int idCounter = 1;
         int pageCounter = 0;
-		double imgTotalSize=0.00;
+	    
+	// This block of structures is required for the JSON report
+	// TODO: Refactor this, with the report generating code below, into its own class
+	double imgTotalSize=0.00;
         int dirSize = PathMap.pathMap.size();
         Vector<String> pageNames = new Vector<>();
         Vector<Double> pageSize = new Vector<>();
